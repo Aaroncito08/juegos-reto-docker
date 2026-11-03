@@ -1,12 +1,15 @@
-import os
+import json
 import mysql.connector
+from pathlib import Path
 
-conexion = mysql.connector.connect(
-    host="reto4-mysql",
-    user="root",
-    password=os.environ["MYSQL_PASSWORD"],
-    database="coches_db"
-)
+# Leer la configuración de MySQL
+ruta = Path(__file__).with_name("config.json")
+
+with open(ruta, "r", encoding="utf-8") as archivo:
+    config = json.load(archivo)
+
+# Conectar a MySQL
+conexion = mysql.connector.connect(**config)
 
 cursor = conexion.cursor()
 cursor.execute("SELECT * FROM coches")
